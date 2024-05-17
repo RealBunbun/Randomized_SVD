@@ -1,9 +1,9 @@
-A = randn(1e3, 1e3);
-A = A+A';
-Rank = 100;
+A = randn(2e3, 2e3);
+A = expm(A+A')/norm(expm(A+A'));
+Rank = 200;
 
 tic
-[U, S, V] = RandSVD(A,Rank);
+[U, S, V] = RandSVD(A,Rank, 'N_Oversamples', Rank, 'N_Subspace_Iters', 5);
 toc 
 
 tic
@@ -20,4 +20,4 @@ Diff = norm(A - U_*diag(S_)*V_')/norm(A)
 
 figure();
 semilogy(S_, 'r-o'); hold on
-semilogy(S, 'bx');
+semilogy(S, 'b-x');

@@ -1,8 +1,22 @@
-function [U, S, V] = RandSVD(A, Rank)
+function [U, S, V] = RandSVD(A, Rank, varargin)
+% 
 
-N_Oversamples    = 10; 
-N_Subspace_Iters = 5;
-Return_Range     = 'False';
+if nargin==2
+  N_Oversamples    = 0;
+  N_Subspace_Iters = 5;
+elseif nargin>2
+  if mod(numel(varargin),2)==0
+    for ii = 1:2:numel(varargin)
+      if ischar(varargin{ii})
+        eval(sprintf('%s = %g;', varargin{ii}, varargin{ii+1}));
+      else
+        error('Invalid usage of RandSVD!');
+      end
+    end
+  else
+    error('Invalid usage of RandSVD!');
+  end
+end
 
 if N_Oversamples ==0
   N_Samples = 2*Rank;
@@ -10,6 +24,7 @@ else
   N_Samples = Rank + N_Oversamples;
 end
 
+%%
 % // Phase 1
 Q = Find_Range(A, N_Samples, N_Subspace_Iters);
 
