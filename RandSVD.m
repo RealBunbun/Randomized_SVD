@@ -29,7 +29,8 @@ end
 Q = Find_Range(A, N_Samples, N_Subspace_Iters);
 
 % // Phase 2
-B = transpose(Q) * A;
+% B = transpose(Q) * A;
+B = Q' * A;
 [U_tilde, S, V] = svd(B, 'econ');
 U = Q * U_tilde;
 
@@ -62,7 +63,8 @@ function [Q] = Subspace_Iter(A, Y0, N_Iters)
 
 Q = Ortho_Basis(Y0);
 for ii = 1:N_Iters
-  Z = Ortho_Basis(transpose(A) * Q);
+%   Z = Ortho_Basis(transpose(A) * Q);
+  Z = Ortho_Basis((A') * Q);
   Q = Ortho_Basis(A * Z);
 end
 
